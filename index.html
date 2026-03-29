@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台州体彩 AI 智能助手 - 下一代彩票服务平台</title>
+    <meta name="description" content="AI 驱动的体育彩票智能分析平台，提供大乐透、排列三、七星彩等专业数据分析和智能推荐">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- AI 助手悬浮球 -->
+    <div class="ai-assistant" id="aiAssistant" onclick="toggleAIChat()">
+        <div class="ai-avatar">🤖</div>
+        <div class="ai-status"></div>
+    </div>
+
+    <!-- AI 聊天窗口 -->
+    <div class="ai-chat-window" id="aiChatWindow">
+        <div class="chat-header">
+            <div class="chat-title">
+                <span class="chat-avatar">🤖</span>
+                <div>
+                    <h3>AI 智能助手</h3>
+                    <p class="chat-status">在线 · 随时为您服务</p>
+                </div>
+            </div>
+            <button class="close-btn" onclick="toggleAIChat()">×</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message ai-message">
+                <div class="message-content">
+                    您好！我是您的 AI 彩票助手，可以帮您：
+                    <ul>
+                        <li>分析历史开奖数据</li>
+                        <li>生成智能推荐号码</li>
+                        <li>解读走势图表</li>
+                        <li>解答玩法规则</li>
+                    </ul>
+                    有什么可以帮您的吗？😊
+                </div>
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="输入您的问题..." onkeypress="handleChatKeyPress(event)">
+            <button class="send-btn" onclick="sendChatMessage()">发送</button>
+        </div>
+    </div>
+
+    <!-- 顶部导航 -->
+    <header class="header header-ai">
+        <div class="container">
+            <div class="logo logo-ai">
+                <span class="logo-icon">🎯</span>
+                <div>
+                    <h1>台州体彩 AI 智能助手</h1>
+                    <p class="logo-subtitle">AI 驱动 · 数据智能 · 专业分析</p>
+                </div>
+            </div>
+            <nav class="nav nav-ai">
+                <a href="#home" class="nav-item active">首页</a>
+                <a href="#lottery" class="nav-item">彩种服务</a>
+                <a href="#trends" class="nav-item">AI 走势</a>
+                <a href="#recommend" class="nav-item">智能推荐</a>
+                <a href="#data" class="nav-item">历史数据</a>
+                <a href="rules.html" class="nav-item">玩法规则</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- AI 主横幅 -->
+    <section id="home" class="hero hero-ai">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title">
+                    <span class="gradient-text">AI 智能分析</span> 让选号更科学
+                </h2>
+                <p class="hero-subtitle">基于机器学习和大数据算法，为您提供专业的彩票数据分析服务</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="statDraws">0+</div>
+                        <div class="stat-label">历史期数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="statUsers">0+</div>
+                        <div class="stat-label">服务用户</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="statAccuracy">0%</div>
+                        <div class="stat-label">算法准确率</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">AI 在线服务</div>
+                    </div>
+                </div>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-lg" onclick="startAIRecommendation()">
+                        <span class="btn-icon">✨</span> 开始 AI 选号
+                    </button>
+                    <button class="btn btn-secondary btn-lg" onclick="showSection('trends')">
+                        <span class="btn-icon">📊</span> 查看走势
+                    </button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="ai-brain-animation">
+                    <div class="brain-core">🧠</div>
+                    <div class="data-ring ring-1"></div>
+                    <div class="data-ring ring-2"></div>
+                    <div class="data-ring ring-3"></div>
+                    <div class="floating-numbers" id="floatingNumbers"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 实时开奖公告 -->
+    <div class="live-draw-bar">
+        <div class="container">
+            <div class="live-indicator">
+                <span class="live-dot"></span>
+                <span>实时开奖</span>
+            </div>
+            <div class="draw-marquee">
+                <div class="marquee-content" id="latestDraws">
+                    <!-- 最新开奖数据将通过 JS 动态加载 -->
+                </div>
+            </div>
+            <button class="btn-check-result" onclick="checkMyTickets()">
+                🔍 查中奖
+            </button>
+        </div>
+    </div>
+
+    <!-- 彩种服务 -->
+    <section id="lottery" class="section section-ai">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-icon">🎫</span> 智能彩种服务
+                </h2>
+                <p class="section-desc">AI 实时监控，数据自动更新</p>
+            </div>
+            
+            <div class="lottery-grid-ai">
+                <!-- 大乐透 -->
+                <div class="lottery-card-ai" data-type="dlt">
+                    <div class="card-badge hot">热门</div>
+                    <div class="card-header-ai">
+                        <div class="card-top">
+                            <span class="card-icon">🎫</span>
+                            <h3>超级大乐透</h3>
+                        </div>
+                        <div class="jackpot-info">
+                            <div class="jackpot-label">奖池金额</div>
+                            <div class="jackpot-amount" id="dlt-jackpot">8.30 亿</div>
+                        </div>
+                    </div>
+                    <div class="card-body-ai">
+                        <div class="draw-schedule">
+                            <span class="schedule-icon">📅</span>
+                            <span>开奖：周一、三、六 21:25</span>
+                        </div>
+                        <div class="play-format">
+                            <span class="format-label">玩法：</span>
+                            <span class="format-value">5+2 (前区 35 选 5 + 后区 12 选 2)</span>
+                        </div>
+                        <div class="latest-draw-ai" id="dlt-latest">
+                            <div class="draw-label">
+                                <span class="label-tag">最新</span>
+                                <span class="draw-period">第 26031 期</span>
+                            </div>
+                            <div class="draw-numbers">
+                                <span class="number-ball front">06</span>
+                                <span class="number-ball front">08</span>
+                                <span class="number-ball front">22</span>
+                                <span class="number-ball front">29</span>
+                                <span class="number-ball front">34</span>
+                                <span class="number-separator">+</span>
+                                <span class="number-ball back">05</span>
+                                <span class="number-ball back">07</span>
+                            </div>
+                            <div class="draw-date">2026-03-25</div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-action" onclick="quickSelect('dlt')">
+                                <span class="action-icon">⚡</span> 快速选号
+                            </button>
+                            <button class="btn-action btn-outline" onclick="showLotteryDetail('dlt')">
+                                <span class="action-icon">📊</span> 详情分析
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 排列三 -->
+                <div class="lottery-card-ai" data-type="pl3">
+                    <div class="card-header-ai">
+                        <div class="card-top">
+                            <span class="card-icon">🎲</span>
+                            <h3>排列三</h3>
+                        </div>
+                    </div>
+                    <div class="card-body-ai">
+                        <div class="draw-schedule">
+                            <span class="schedule-icon">📅</span>
+                            <span>开奖：每天 21:25</span>
+                        </div>
+                        <div class="play-format">
+                            <span class="format-label">玩法：</span>
+                            <span class="format-value">3 位数 (000-999)</span>
+                        </div>
+                        <div class="latest-draw-ai" id="pl3-latest">
+                            <div class="draw-label">
+                                <span class="label-tag">最新</span>
+                                <span class="draw-period">第 26075 期</span>
+                            </div>
+                            <div class="draw-numbers">
+                                <span class="number-ball digit">4</span>
+                                <span class="number-ball digit">3</span>
+                                <span class="number-ball digit">7</span>
+                            </div>
+                            <div class="draw-date">2026-03-26</div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-action" onclick="quickSelect('pl3')">
+                                <span class="action-icon">⚡</span> 快速选号
+                            </button>
+                            <button class="btn-action btn-outline" onclick="showLotteryDetail('pl3')">
+                                <span class="action-icon">📊</span> 详情分析
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 排列五 -->
+                <div class="lottery-card-ai" data-type="pl5">
+                    <div class="card-header-ai">
+                        <div class="card-top">
+                            <span class="card-icon">🎯</span>
+                            <h3>排列五</h3>
+                        </div>
+                    </div>
+                    <div class="card-body-ai">
+                        <div class="draw-schedule">
+                            <span class="schedule-icon">📅</span>
+                            <span>开奖：每天 21:25</span>
+                        </div>
+                        <div class="play-format">
+                            <span class="format-label">玩法：</span>
+                            <span class="format-value">5 位数 (00000-99999)</span>
+                        </div>
+                        <div class="latest-draw-ai" id="pl5-latest">
+                            <div class="draw-label">
+                                <span class="label-tag">最新</span>
+                                <span class="draw-period">第 26075 期</span>
+                            </div>
+                            <div class="draw-numbers">
+                                <span class="number-ball digit">4</span>
+                                <span class="number-ball digit">3</span>
+                                <span class="number-ball digit">7</span>
+                                <span class="number-ball digit">5</span>
+                                <span class="number-ball digit">2</span>
+                            </div>
+                            <div class="draw-date">2026-03-26</div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-action" onclick="quickSelect('pl5')">
+                                <span class="action-icon">⚡</span> 快速选号
+                            </button>
+                            <button class="btn-action btn-outline" onclick="showLotteryDetail('pl5')">
+                                <span class="action-icon">📊</span> 详情分析
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 七星彩 -->
+                <div class="lottery-card-ai" data-type="qxc">
+                    <div class="card-header-ai">
+                        <div class="card-top">
+                            <span class="card-icon">⭐</span>
+                            <h3>七星彩</h3>
+                        </div>
+                        <div class="jackpot-info">
+                            <div class="jackpot-label">头奖</div>
+                            <div class="jackpot-amount" id="qxc-jackpot">500 万</div>
+                        </div>
+                    </div>
+                    <div class="card-body-ai">
+                        <div class="draw-schedule">
+                            <span class="schedule-icon">📅</span>
+                            <span>开奖：二、五、日 21:25</span>
+                        </div>
+                        <div class="play-format">
+                            <span class="format-label">玩法：</span>
+                            <span class="format-value">6+1 (前 6 位 0-9 + 后区 0-14)</span>
+                        </div>
+                        <div class="latest-draw-ai" id="qxc-latest">
+                            <div class="draw-label">
+                                <span class="label-tag">最新</span>
+                                <span class="draw-period">第 26032 期</span>
+                            </div>
+                            <div class="draw-numbers">
+                                <span class="number-ball digit">3</span>
+                                <span class="number-ball digit">1</span>
+                                <span class="number-ball digit">6</span>
+                                <span class="number-ball digit">4</span>
+                                <span class="number-ball digit">4</span>
+                                <span class="number-ball digit">5</span>
+                                <span class="number-separator">+</span>
+                                <span class="number-ball back special">14</span>
+                            </div>
+                            <div class="draw-date">2026-03-25</div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-action" onclick="quickSelect('qxc')">
+                                <span class="action-icon">⚡</span> 快速选号
+                            </button>
+                            <button class="btn-action btn-outline" onclick="showLotteryDetail('qxc')">
+                                <span class="action-icon">📊</span> 详情分析
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI 走势分析 -->
+    <section id="trends" class="section section-alt section-ai">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-icon">📊</span> AI 智能走势分析
+                </h2>
+                <p class="section-desc">多维度数据分析，洞察号码规律</p>
+            </div>
+
+            <div class="trend-controls-ai">
+                <div class="control-group-ai">
+                    <label>选择彩种</label>
+                    <select id="trend-lottery-type" class="select-ai">
+                        <option value="dlt">超级大乐透</option>
+                        <option value="pl3">排列三</option>
+                        <option value="pl5">排列五</option>
+                        <option value="qxc">七星彩</option>
+                    </select>
+                </div>
+                <div class="control-group-ai">
+                    <label>分析维度</label>
+                    <select id="trend-dimension" class="select-ai">
+                        <option value="hot_cold">冷热号分析</option>
+                        <option value="skip_value">遗漏值分析</option>
+                        <option value="sum_trend">和值走势</option>
+                        <option value="odd_even">奇偶比例</option>
+                        <option value="big_small">大小号分布</option>
+                        <option value="zone_analysis">区间分析</option>
+                    </select>
+                </div>
+                <div class="control-group-ai">
+                    <label>期数范围</label>
+                    <select id="trend-period" class="select-ai">
+                        <option value="30">近 30 期</option>
+                        <option value="50">近 50 期</option>
+                        <option value="100">近 100 期</option>
+                        <option value="all">全部历史</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary btn-lg" onclick="analyzeTrendsAI()">
+                    <span class="btn-icon">🔍</span> AI 分析
+                </button>
+            </div>
+
+            <div id="trend-result-ai" class="result-box-ai">
+                <div class="result-placeholder-ai">
+                    <div class="placeholder-icon">📊</div>
+                    <p>选择分析维度和期数范围，点击"AI 分析"查看专业走势图表</p>
+                    <p class="placeholder-tip">💡 AI 提示：建议先选择大乐透，查看冷热号分析</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI 智能推荐 -->
+    <section id="recommend" class="section section-ai">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-icon">🤖</span> AI 智能推荐引擎
+                </h2>
+                <p class="section-desc">基于机器学习的多算法融合推荐系统</p>
+            </div>
+
+            <div class="ai-recommend-config">
+                <div class="config-panel">
+                    <h3 class="config-title">配置推荐参数</h3>
+                    
+                    <div class="config-item">
+                        <label class="config-label">
+                            <span class="label-icon">🎫</span>
+                            选择彩种
+                        </label>
+                        <select id="rec-lottery-type" class="config-select">
+                            <option value="dlt">超级大乐透</option>
+                            <option value="pl3">排列三</option>
+                            <option value="pl5">排列五</option>
+                            <option value="qxc">七星彩</option>
+                        </select>
+                    </div>
+
+                    <div class="config-item">
+                        <label class="config-label">
+                            <span class="label-icon">🧮</span>
+                            AI 算法模型
+                        </label>
+                        <div class="algorithm-selector">
+                            <label class="algo-option">
+                                <input type="checkbox" value="mlp" checked>
+                                <span class="algo-name">MLP 神经网络</span>
+                                <span class="algo-desc">深度学习预测</span>
+                            </label>
+                            <label class="algo-option">
+                                <input type="checkbox" value="lstm" checked>
+                                <span class="algo-name">LSTM 时序分析</span>
+                                <span class="algo-desc">时间序列建模</span>
+                            </label>
+                            <label class="algo-option">
+                                <input type="checkbox" value="rf">
+                                <span class="algo-name">随机森林</span>
+                                <span class="algo-desc">集成学习算法</span>
+                            </label>
+                            <label class="algo-option">
+                                <input type="checkbox" value="xgboost">
+                                <span class="algo-name">XGBoost</span>
+                                <span class="algo-desc">梯度提升树</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="config-item">
+                        <label class="config-label">
+                            <span class="label-icon">📈</span>
+                            分析特征
+                        </label>
+                        <div class="feature-selector">
+                            <label class="feature-option">
+                                <input type="checkbox" checked>
+                                <span>冷热号</span>
+                            </label>
+                            <label class="feature-option">
+                                <input type="checkbox" checked>
+                                <span>遗漏值</span>
+                            </label>
+                            <label class="feature-option">
+                                <input type="checkbox" checked>
+                                <span>和值</span>
+                            </label>
+                            <label class="feature-option">
+                                <input type="checkbox">
+                                <span>奇偶比</span>
+                            </label>
+                            <label class="feature-option">
+                                <input type="checkbox">
+                                <span>大小比</span>
+                            </label>
+                            <label class="feature-option">
+                                <input type="checkbox">
+                                <span>区间比</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="config-item">
+                        <label class="config-label">
+                            <span class="label-icon">🔢</span>
+                            推荐注数
+                        </label>
+                        <div class="note-selector">
+                            <button class="note-btn" data-count="1">1 注</button>
+                            <button class="note-btn active" data-count="3">3 注</button>
+                            <button class="note-btn" data-count="5">5 注</button>
+                            <button class="note-btn" data-count="10">10 注</button>
+                        </div>
+                    </div>
+
+                    <div class="config-actions">
+                        <button class="btn btn-primary btn-xl" onclick="generateAIRecommendation()">
+                            <span class="btn-icon">✨</span> 启动 AI 推荐引擎
+                        </button>
+                        <button class="btn btn-secondary btn-xl" onclick="advancedSettings()">
+                            <span class="btn-icon">⚙️</span> 高级设置
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ai-recommend-result" class="result-box-ai result-box-large">
+                <div class="result-placeholder-ai">
+                    <div class="placeholder-icon">🤖</div>
+                    <h3>AI 推荐引擎待启动</h3>
+                    <p>配置好参数后，点击"启动 AI 推荐引擎"按钮</p>
+                    <div class="ai-processing-hint">
+                        <div class="hint-step">
+                            <span class="step-icon">📊</span>
+                            <span>分析历史数据</span>
+                        </div>
+                        <div class="hint-step">
+                            <span class="step-icon">🧮</span>
+                            <span>运行 AI 算法</span>
+                        </div>
+                        <div class="hint-step">
+                            <span class="step-icon">🎯</span>
+                            <span>生成推荐号码</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 历史数据查询 -->
+    <section id="data" class="section section-alt section-ai">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-icon">📚</span> 历史开奖数据
+                </h2>
+                <p class="section-desc">完整历史数据查询，支持多维度筛选</p>
+            </div>
+
+            <div class="data-query-panel">
+                <div class="query-filters">
+                    <div class="filter-group">
+                        <label>彩种</label>
+                        <select id="data-lottery-type" class="filter-select">
+                            <option value="dlt">大乐透</option>
+                            <option value="pl3">排列三</option>
+                            <option value="pl5">排列五</option>
+                            <option value="qxc">七星彩</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>期号范围</label>
+                        <div class="period-range">
+                            <input type="text" id="period-start" placeholder="起始期号" class="filter-input">
+                            <span class="range-separator">-</span>
+                            <input type="text" id="period-end" placeholder="结束期号" class="filter-input">
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label>时间范围</label>
+                        <div class="date-range">
+                            <input type="date" id="date-start" class="filter-input">
+                            <span class="range-separator">-</span>
+                            <input type="date" id="date-end" class="filter-input">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="queryHistoryData()">
+                        <span class="btn-icon">🔍</span> 查询
+                    </button>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table" id="historyDataTable">
+                        <thead>
+                            <tr>
+                                <th>期号</th>
+                                <th>开奖日期</th>
+                                <th>开奖号码</th>
+                                <th>和值</th>
+                                <th>奇偶比</th>
+                                <th>大小比</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyDataBody">
+                            <tr>
+                                <td colspan="7" class="empty-state">
+                                    <div class="empty-icon">📊</div>
+                                    <p>请选择查询条件，点击"查询"按钮</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination" id="dataPagination">
+                    <!-- 分页将通过 JS 动态生成 -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer id="about" class="footer footer-ai">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>关于台州体彩 AI</h4>
+                    <p>台州体彩 AI 智能助手是基于人工智能和大数据技术的专业彩票分析平台，致力于为用户提供科学、专业的数据参考服务。</p>
+                    <div class="footer-badges">
+                        <span class="badge">AI 驱动</span>
+                        <span class="badge">数据安全</span>
+                        <span class="badge">专业分析</span>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>免责声明</h4>
+                    <ul>
+                        <li>⚠️ 理性购彩，量力而行</li>
+                        <li>⚠️ 未成年人不得购买彩票</li>
+                        <li>⚠️ 本站数据仅供参考</li>
+                        <li>⚠️ 不构成任何购彩建议</li>
+                        <li>⚠️ AI 推荐不保证中奖</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>联系我们</h4>
+                    <div class="contact-info">
+                        <p>📍 地址：浙江省台州市</p>
+                        <p>📧 邮箱：support@tztc-ai.com</p>
+                        <p>💬 微信：tztc_ai</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">微信</a>
+                        <a href="#" class="social-link">微博</a>
+                        <a href="#" class="social-link">抖音</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 台州体彩 AI 智能助手 | 技术支持：AI Lab | 仅供娱乐参考</p>
+                <p class="footer-note">本网站不提供在线售彩服务，所有功能均为数据分析和娱乐用途</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 弹窗组件 -->
+    <div id="modal" class="modal">
+        <div class="modal-content modal-lg">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/ai-engine.js"></script>
+    <script src="js/charts.js"></script>
+</body>
+</html>
